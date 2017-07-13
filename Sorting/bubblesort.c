@@ -30,20 +30,20 @@ void bubble_sort(int data[], int length)
 			}
 		}
 		printf("  <%02d> adjusted list: ", n);
-    	print_list(x, LEN);
+        print_list(x, LEN);
 		n++;
 	}
 }
 
 int main(int argc, char *argv[])
 {
-	printf("\nUnsorted list: ");
+    printf("\nUnsorted list: ");
     print_list(x, LEN);
     printf("\n");
 
-	bubble_sort(x, LEN);
+    bubble_sort(x, LEN);
     
-	printf("\nSorted list: ");
+    printf("\nSorted list: ");
     print_list(x, LEN);
     printf("\n");
 
