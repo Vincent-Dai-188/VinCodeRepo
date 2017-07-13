@@ -1,2 +1,2 @@
-# Sorting
-Vincent's sort coding exercise
+# VinCodeRepo
+Vincent's coding exercises
