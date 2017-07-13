@@ -26,11 +26,11 @@ void print_list(int data[], int left, int right)
 void print_list_split(int data[], int left, int right, int pivotpos)
 {
     if (left >=right)
-	return;
+        return;
 
     for (int i=left;i<=right;i++)
     {
-	if (pivotpos == i)
+	    if (pivotpos == i)
             printf("(%d) ", data[i]);
         else
             printf("%d ", data[i]);
@@ -42,6 +42,7 @@ void swapdata(int data[], int index1, int index2, bool isPivot)
 {
     static int sum = 0;
     int tmp;
+
     if (index1 != index2)
     {
     	sum++;
