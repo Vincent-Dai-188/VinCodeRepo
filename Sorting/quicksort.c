@@ -16,7 +16,7 @@ void prntab(int n)
 void print_list(int data[], int left, int right)
 {
     if (left >=right)
-	return;
+    return;
 
     for (int i=left;i<=right;i++)
         printf("%d ", data[i]);
@@ -30,7 +30,7 @@ void print_list_split(int data[], int left, int right, int pivotpos)
 
     for (int i=left;i<=right;i++)
     {
-	    if (pivotpos == i)
+        if (pivotpos == i)
             printf("(%d) ", data[i]);
         else
             printf("%d ", data[i]);
@@ -45,9 +45,9 @@ void swapdata(int data[], int index1, int index2, bool isPivot)
 
     if (index1 != index2)
     {
-    	sum++;
+        sum++;
         prntab(indent_nm);
-    	if (! isPivot)
+        if (! isPivot)
             printf("   <%d> swap: [%d] <=> [%d]\n", sum, data[index1], data[index2]);
         else
             printf("   <%d> swap: [%d] <=> [%d]  * pivot_exchange *\n", sum, data[index1], data[index2]);
@@ -84,7 +84,7 @@ int partition(int data[], int left, int right)
     prntab(indent_nm);
     printf(">> Partition for: ");
     print_list(data, left, right);
-    
+
     while (index < right)
     {
         if (data[index] < pivot) 
@@ -95,7 +95,7 @@ int partition(int data[], int left, int right)
         }
         index++;
     }
-    
+
     swapdata(data, pivotpos, storeIndex, true);
     
     prntab(indent_nm);
