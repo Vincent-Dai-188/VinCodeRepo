@@ -10,7 +10,7 @@ typedef enum bool_s {false, true} bool;
 static void print_list(int data[], int len)
 {
     for (int i = 0; i < len; i++)
-	printf("%-2d ", data[i]);
+    printf("%-2d ", data[i]);
     printf("\n");
 }
 
@@ -31,17 +31,17 @@ void merge(int list_final[], int list_left[], int len_left, int list_right[], in
 
     while (index_left < len_left && index_right < len_right)
     {
-	if (list_left[index_left] < list_right[index_right])
-		list_final[index_final++] = list_left[index_left++];
-	else
-		list_final[index_final++] = list_right[index_right++];
+    if (list_left[index_left] < list_right[index_right])
+        list_final[index_final++] = list_left[index_left++];
+    else
+        list_final[index_final++] = list_right[index_right++];
     }
 
     while (index_left < len_left)
-	list_final[index_final++] = list_left[index_left++];
+    list_final[index_final++] = list_left[index_left++];
 
     while (index_right < len_right)
-	list_final[index_final++] = list_right[index_right++];
+    list_final[index_final++] = list_right[index_right++];
 }
 
 void merge_sort(int data[], int len)
@@ -76,7 +76,7 @@ void merge_sort(int data[], int len)
         printf("    >> Right_list: "); 
         print_list(buf_right, len_right);*/
 
-        merge_sort(buf_left, len_left);	     // To sort the left side
+        merge_sort(buf_left, len_left);      // To sort the left side
         merge_sort(buf_right, len_right);    // To sort the right side
         
         merge(data, buf_left, len_left, buf_right, len_right);  // Merge the two sorted parts
