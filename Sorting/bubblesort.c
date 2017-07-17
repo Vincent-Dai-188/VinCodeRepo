@@ -14,25 +14,25 @@ void print_list(int data[], int length)
 
 void bubble_sort(int data[], int length)
 {
-	int i, n;
-	int tmp;
+    int i, n;
+    int tmp;
 
-	n = 1;
-	while (n < length)
-	{
-		for (i=0;i<(length-n);i++)
-		{
-			if (data[i] > data[i+1])
-			{
-				tmp = data[i];
-				data[i] = data[i+1];
-				data[i+1] = tmp;
-			}
-		}
-		printf("  <%02d> adjusted list: ", n);
+    n = 1;
+    while (n < length)
+    {
+        for (i=0;i<(length-n);i++)
+        {
+            if (data[i] > data[i+1])
+            {
+                tmp = data[i];
+                data[i] = data[i+1];
+                data[i+1] = tmp;
+            }
+        }
+        printf("  <%02d> adjusted list: ", n);
         print_list(x, LEN);
-		n++;
-	}
+        n++;
+    }
 }
 
 int main(int argc, char *argv[])
