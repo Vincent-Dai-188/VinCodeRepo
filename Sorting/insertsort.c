@@ -17,33 +17,33 @@ void print_list(int data[], int length)
 
 void insert_sort(int data[], int length)
 {
-	int index = 1;
-	int i, j;
-	int currentV;
+    int index = 1;
+    int i, j;
+    int currentV;
 
-	while (index < length)
-	{
-		i = 0;
-		currentV = data[index];
-		while (i < index)
-		{
-			if (data[i] > data[index])
+    while (index < length)
+    {
+        i = 0;
+        currentV = data[index];
+        while (i < index)
+        {
+            if (data[i] > data[index])
             {
-				printf("    <%d> Insert '%d'([%d]) before '%d'([%d])\n", ++sum, data[index], index, data[i], i);
-				j = index;
-				while (j > i)
-				{
-					data[j] = data[j-1];
-					j--;
-				}
-				data[i] = currentV;
-				printf("\tcurrent list: ");
-    			print_list(x, LEN);
-			}
-			i++;
-		}
-		index++;		
-	}
+                printf("    <%d> Insert '%d'([%d]) before '%d'([%d])\n", ++sum, data[index], index, data[i], i);
+                j = index;
+                while (j > i)
+                {
+                    data[j] = data[j-1];
+                    j--;
+                }
+                data[i] = currentV;
+                printf("\tcurrent list: ");
+                print_list(x, LEN);
+            }
+            i++;
+        }
+        index++;        
+    }
 }
 
 int main(int argc, char *argv[])
