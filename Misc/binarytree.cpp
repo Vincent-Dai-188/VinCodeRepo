@@ -234,31 +234,73 @@ void delete_BTnodes(BinaryTreeNode* p_BThead)
     }
 }
 
-void indent_print(int data[], int index)
+void indent_print_level(int data[], int index, int level)
 {
 	int iDat1, iDat2;
 	int i = index;
 
-	for(int n=0;n<4;n++)
-	{
-		iDat1 = data[i++];
-		cout << " " << iDat1;
-		iDat2 = data[i++];
-		if (iDat1 < 10)
-		{
-			if (iDat2 < 10)
-				cout << "   " << iDat2;
-			else
-				cout << "  " << iDat2;
-		}
-		else
-		{
-			if (iDat2 < 10)
-				cout << "  " << iDat2;
-			else
-				cout << " " << iDat2;
-		}
-	}
+    switch(level)
+    {
+        case 2:
+                iDat1 = data[i++];
+                cout << iDat1;
+	            if (iDat1 < 10)
+	                cout << "           " << data[i++] << endl;
+	            else
+		            cout << "          " << data[i++] << endl;
+                break;
+        case 3:
+                for(int n=0;n<2;n++)
+	            {
+		            iDat1 = data[i++];
+		            if (n == 0)
+		                cout << iDat1;
+		            else
+		                cout << "     " << iDat1;
+		            iDat2 = data[i++];
+		            if (iDat1 < 10)
+		            {
+			            if (iDat2 < 10)
+				            cout << "     " << iDat2;
+			            else
+				            cout << "    " << iDat2;
+		            }
+		            else
+		            {
+			            if (iDat2 < 10)
+				            cout << "    " << iDat2;
+			            else
+				            cout << "   " << iDat2;
+		            }
+	            }
+	            cout << endl;
+                break;
+        case 4:
+        	    for(int n=0;n<4;n++)
+	            {
+		            iDat1 = data[i++];
+		            cout << " " << iDat1;
+		            iDat2 = data[i++];
+		            if (iDat1 < 10)
+		            {
+			            if (iDat2 < 10)
+				            cout << "   " << iDat2;
+			            else
+				            cout << "  " << iDat2;
+		            }
+		            else
+		            {
+			            if (iDat2 < 10)
+				            cout << "  " << iDat2;
+			            else
+				            cout << " " << iDat2;
+		            }
+	            }
+	            cout << endl;
+                break;
+        default:
+                break;
+    }
 }
 
 void print_tree_align_left(int data[])
@@ -269,51 +311,21 @@ void print_tree_align_left(int data[])
     cout << "  " << data[index++] << endl;
     cout << "  |____________" << endl;
     cout << "  |           |" << endl;
+    cout << "  ";
+    indent_print_level(data, index, 2);
+    index += 2;
 
-	iDat = data[index++];
-    cout << "  " << iDat;
-	if (iDat < 10)
-	    cout << "           " << data[index++] << endl;
-	else
-		cout << "          " << data[index++] << endl;
     cout << "  |______     |______" << endl;
     cout << "  |     |     |     |" << endl;
-
-	iDat = data[index++];
-    cout << "  " << iDat;
-	iDat2 = data[index++];
-	if (iDat < 10)
-		if (iDat2 < 10)
-		    cout << "     " << iDat2;
-		else
-		    cout << "    " << iDat2;
-	else
-		if (iDat2 < 10)
-	    	cout << "    " << iDat2;
-		else
-	    	cout << "   " << iDat2;
-
-	iDat = data[index++];
-    cout << "     " << iDat;
-	iDat2 = data[index++];
-	if (iDat < 10)
-		if (iDat2 < 10)
-		    cout << "     " << iDat2 << endl;
-		else
-		    cout << "    " << iDat2 << endl;
-	else
-		if (iDat2 < 10)
-	    	cout << "    " << iDat2 << endl;
-		else
-	    	cout << "   " << iDat2 << endl;
+    cout << "  ";
+    indent_print_level(data, index, 3);
+    index += 4;
 
     cout << "  |____ |____ |____ |____" << endl;
     cout << "  |   | |   | |   | |   |" << endl;
 
 	cout << " ";
-	indent_print(data, index);
-
-    cout << endl;
+	indent_print_level(data, index, 4);
 }
 
 void print_tree_align_center(int data[])
@@ -323,21 +335,21 @@ void print_tree_align_center(int data[])
     cout << "             " << data[index++] << endl;
     cout << "       ______|______" << endl;
     cout << "       |           |" << endl;
-    cout << "       " << data[index++];
-    cout << "           " << data[index++] << endl;
+    cout << "       ";
+    indent_print_level(data, index, 2);
+    index += 2;
+
     cout << "    ___|___     ___|___" << endl;
     cout << "    |     |     |     |" << endl;
-    cout << "    " << data[index++];
-    cout << "     " << data[index++];
-    cout << "     " << data[index++];
-    cout << "     " << data[index++] << endl;
+    cout << "    ";
+    indent_print_level(data, index, 3);
+    index += 4;
+
     cout << "  __|__ __|__ __|__ __|__" << endl;
     cout << "  |   | |   | |   | |   |" << endl;
 
 	cout << " ";
-	indent_print(data, index);
-
-    cout << endl;
+	indent_print_level(data, index, 4);
 }
 
 int main(int argc, char *argv[])
