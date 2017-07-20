@@ -16,14 +16,14 @@ using namespace std;
 
     8
     |____________
-    |            |
-    6            10
-    |_____       |_______
-    |     |      |       |
-    5     7      9       11
-    |__   |___   |___    |___
-    |  |  |   |  |   |   |   |
-    1  2  3   4  12  15  17  19
+    |           |
+    6           10
+    |______     |______
+    |     |     |     |
+    5     7     9     11
+    |____ |____ |____ |____
+    |   | |   | |   | |   |
+    1   2 3   4 12 15 17  19
     
                8
          ______|______
@@ -32,14 +32,15 @@ using namespace std;
       ___|___     ___|___
       |     |     |     |
       5     7     9     11
-     _|_   _|_   _|_   _|_
+    __|__ __|__ __|__ __|__
     |   | |   | |   | |   |
     1   2 3   4 12 15 17 19
 
     Expected output:  8 6 10 5 7 9 11 1 2 3 4 12 15 17 19
 */
 
-int x[] = { 8, 6, 10, 5, 7, 9, 11, 1, 2, 3, 4, 12, 15, 17, 19 };
+int x[] = { 8, 6, 10, 5, 7, 9, 11, 1, 12, 3, 14, 2, 15, 4, 19 };
+//int x[] = { 8, 10, 6, 25, 37, 11, 29, 31, 12, 3, 14, 2, 15, 4, 19 };
 const int LEN = sizeof(x)/sizeof(int);
 
 struct BinaryTreeNode
@@ -115,23 +116,35 @@ void build_BinaryNodes(int leftvalue, int rightvalue, BinaryTreeNode *p_parentno
 {
     BinaryTreeNode *p_leftnode, *p_rightnode;
 
-    p_leftnode = new(BinaryTreeNode);
-    p_rightnode = new(BinaryTreeNode);
-    if ( (p_leftnode == NULL) || (p_rightnode == NULL) )
-    {
-        cout << "Failed to new memory to store BTnode!" << endl;
-        return;
-    }
-    p_leftnode->m_value = leftvalue;
-    p_leftnode->m_pLeft = NULL;
-    p_leftnode->m_pRight = NULL;
+	if (leftvalue != 0xff)
+	{
+		p_leftnode = new(BinaryTreeNode);
+		if (p_leftnode == NULL)
+		{
+		    cout << "Failed to new memory to store BTnode!" << endl;
+		    return;
+		}
+		p_leftnode->m_value = leftvalue;
+		p_leftnode->m_pLeft = NULL;
+		p_leftnode->m_pRight = NULL;
 
-    p_rightnode->m_value = rightvalue;
-    p_rightnode->m_pLeft = NULL;
-    p_rightnode->m_pRight = NULL;
+		p_parentnode->m_pLeft = p_leftnode;
+	}
 
-    p_parentnode->m_pLeft = p_leftnode;
-    p_parentnode->m_pRight = p_rightnode;
+	if (rightvalue != 0xff)
+	{
+		p_rightnode = new(BinaryTreeNode);
+		if (p_rightnode == NULL)
+		{
+		    cout << "Failed to new memory to store BTnode!" << endl;
+		    return;
+		}
+		p_rightnode->m_value = rightvalue;
+		p_rightnode->m_pLeft = NULL;
+		p_rightnode->m_pRight = NULL;
+
+		p_parentnode->m_pRight = p_rightnode;
+	}
 }
 
 BinaryTreeNode* build_BinaryTree(int data[])
@@ -221,25 +234,85 @@ void delete_BTnodes(BinaryTreeNode* p_BThead)
     }
 }
 
+void indent_print(int data[], int index)
+{
+	int iDat1, iDat2;
+	int i = index;
+
+	for(int n=0;n<4;n++)
+	{
+		iDat1 = data[i++];
+		cout << " " << iDat1;
+		iDat2 = data[i++];
+		if (iDat1 < 10)
+		{
+			if (iDat2 < 10)
+				cout << "   " << iDat2;
+			else
+				cout << "  " << iDat2;
+		}
+		else
+		{
+			if (iDat2 < 10)
+				cout << "  " << iDat2;
+			else
+				cout << " " << iDat2;
+		}
+	}
+}
+
 void print_tree_align_left(int data[])
 {
     int index = 0;
+	int iDat, iDat2;
 
     cout << "  " << data[index++] << endl;
     cout << "  |____________" << endl;
-    cout << "  |            |" << endl;
-    cout << "  " << data[index++];
-    cout << "            " << data[index++] << endl;
-    cout << "  |_____       |_______" << endl;
-    cout << "  |     |      |       |" << endl;
-    cout << "  " << data[index++];
-    cout << "     " << data[index++];
-    cout << "      " << data[index++];
-    cout << "       " << data[index++] << endl;
-    cout << "  |__   |___   |___    |___" << endl;
-    cout << "  |  |  |   |  |   |   |   |" << endl;
-    for(int i=0;i<8;i++)
-        cout << "  " << data[index++];
+    cout << "  |           |" << endl;
+
+	iDat = data[index++];
+    cout << "  " << iDat;
+	if (iDat < 10)
+	    cout << "           " << data[index++] << endl;
+	else
+		cout << "          " << data[index++] << endl;
+    cout << "  |______     |______" << endl;
+    cout << "  |     |     |     |" << endl;
+
+	iDat = data[index++];
+    cout << "  " << iDat;
+	iDat2 = data[index++];
+	if (iDat < 10)
+		if (iDat2 < 10)
+		    cout << "     " << iDat2;
+		else
+		    cout << "    " << iDat2;
+	else
+		if (iDat2 < 10)
+	    	cout << "    " << iDat2;
+		else
+	    	cout << "   " << iDat2;
+
+	iDat = data[index++];
+    cout << "     " << iDat;
+	iDat2 = data[index++];
+	if (iDat < 10)
+		if (iDat2 < 10)
+		    cout << "     " << iDat2 << endl;
+		else
+		    cout << "    " << iDat2 << endl;
+	else
+		if (iDat2 < 10)
+	    	cout << "    " << iDat2 << endl;
+		else
+	    	cout << "   " << iDat2 << endl;
+
+    cout << "  |____ |____ |____ |____" << endl;
+    cout << "  |   | |   | |   | |   |" << endl;
+
+	cout << " ";
+	indent_print(data, index);
+
     cout << endl;
 }
 
@@ -258,10 +331,12 @@ void print_tree_align_center(int data[])
     cout << "     " << data[index++];
     cout << "     " << data[index++];
     cout << "     " << data[index++] << endl;
-    cout << "   _|_   _|_   _|_   _|_" << endl;
+    cout << "  __|__ __|__ __|__ __|__" << endl;
     cout << "  |   | |   | |   | |   |" << endl;
-    for(int i=0;i<8;i++)
-    	cout << "  " << data[index++];
+
+	cout << " ";
+	indent_print(data, index);
+
     cout << endl;
 }
 
@@ -269,18 +344,19 @@ int main(int argc, char *argv[])
 {
     BinaryTreeNode *p_headnode;
 
-    cout << "Build BinaryTree...";
+    print_tree_align_left(x);
+	print_tree_align_center(x);
+
+    cout << endl << "Build BinaryTree...";
     p_headnode = build_BinaryTree(x);
     cout << "\tDone." << endl;
-
-    print_tree_align_center(x);
 
     if (p_headnode != NULL) {
         cout << endl << "Print BinaryTree by layer: " << endl << " ";
         print_BTnodes_by_layer(p_headnode);
         cout << endl;
 
-        cout << "* Expected output:  8 6 10 5 7 9 11 1 2 3 4 12 15 17 19 *" << endl;
+        //cout << "* Expected output:  8 6 10 5 7 9 11 1 2 3 4 12 15 17 19 *" << endl;
 
         cout << endl << "Delete BinaryTree...";
         delete_BTnodes(p_headnode);
