@@ -4,15 +4,6 @@
 using namespace std;
 
 /*
-              8
-            /   \
-           /     \
-          6      10
-         / \     / \
-        /   \   /   \
-       5    7   9   11
-      /\   /\   /\   / \
-     1  2 3 4 12 15 17 19
 
     8
     |____________
@@ -36,12 +27,8 @@ using namespace std;
     |   | |   | |   | |   |
     1   2 3   4 12 15 17 19
 
-    Expected output:  8 6 10 5 7 9 11 1 2 3 4 12 15 17 19
+    Expected output:  (8) (6 10) (5 7 9 11) (1 2 3 4 12 15 17 19)
 */
-
-int x[] = { 8, 6, 10, 5, 7, 9, 11, 1, 12, 3, 14, 2, 15, 4, 19 };
-//int x[] = { 8, 10, 6, 25, 37, 11, 29, 31, 12, 3, 14, 2, 15, 4, 19 };
-const int LEN = sizeof(x)/sizeof(int);
 
 struct BinaryTreeNode
 {
@@ -244,13 +231,25 @@ void indent_print_level(int data[], int index, int level)
         case 2:
                 iDat1 = data[i++];
                 cout << iDat1;
+	            iDat2 = data[i++];
 	            if (iDat1 < 10)
-	                cout << "           " << data[i++] << endl;
+	            {
+		            if (iDat2 < 10)
+			            cout << "           " << iDat2;
+		            else
+			            cout << "          " << iDat2;
+	            }
 	            else
-		            cout << "          " << data[i++] << endl;
-                break;
+	            {
+		            if (iDat2 < 10)
+			            cout << "          " << iDat2;
+		            else
+			            cout << "         " << iDat2;
+	            }
+				cout << endl;
+				break;
         case 3:
-                for(int n=0;n<2;n++)
+                for(int n = 0; n < 2; n++)
 	            {
 		            iDat1 = data[i++];
 		            if (n == 0)
@@ -276,7 +275,7 @@ void indent_print_level(int data[], int index, int level)
 	            cout << endl;
                 break;
         case 4:
-        	    for(int n=0;n<4;n++)
+        	    for(int n = 0; n < 4; n++)
 	            {
 		            iDat1 = data[i++];
 		            cout << " " << iDat1;
@@ -323,7 +322,6 @@ void print_tree_align_left(int data[])
 
     cout << "  |____ |____ |____ |____" << endl;
     cout << "  |   | |   | |   | |   |" << endl;
-
 	cout << " ";
 	indent_print_level(data, index, 4);
 }
@@ -347,34 +345,41 @@ void print_tree_align_center(int data[])
 
     cout << "  __|__ __|__ __|__ __|__" << endl;
     cout << "  |   | |   | |   | |   |" << endl;
-
 	cout << " ";
 	indent_print_level(data, index, 4);
 }
 
 int main(int argc, char *argv[])
 {
-    BinaryTreeNode *p_headnode;
+	//int x[] = { 8, 6, 10, 5, 7, 9, 11, 1, 12, 3, 14, 2, 15, 4, 19 };
+	//int x[] = { 8, 10, 6, 25, 37, 11, 29, 31, 12, 3, 14, 2, 15, 4, 19 };
+	int x[2][15] = { { 8, 6, 10, 5, 7, 9, 11, 1, 12, 3, 14, 2, 15, 4, 19 }, \
+					{ 8, 10, 6, 25, 37, 11, 29, 31, 12, 3, 14, 2, 15, 4, 19 } };
+	//const int LEN = sizeof(x[0])/sizeof(int);
+    
+	BinaryTreeNode *p_headnode = NULL;
 
-    print_tree_align_left(x);
-	print_tree_align_center(x);
+	for(int i = 0; i < 2; i++)
+	{
+		cout << endl << "-------------- Test-" << (i+1) << " --------------" << endl;
+		print_tree_align_left(&x[i][0]);
+		print_tree_align_center(&x[i][0]);
 
-    cout << endl << "Build BinaryTree...";
-    p_headnode = build_BinaryTree(x);
-    cout << "\tDone." << endl;
+		cout << endl << "Build BinaryTree...";
+		p_headnode = build_BinaryTree(&x[i][0]);
+		cout << "\tDone." << endl;
 
-    if (p_headnode != NULL) {
-        cout << endl << "Print BinaryTree by layer: " << endl << " ";
-        print_BTnodes_by_layer(p_headnode);
-        cout << endl;
+		if (p_headnode != NULL) {
+		    cout << endl << "Print BinaryTree by layer: " << endl << " ";
+		    print_BTnodes_by_layer(p_headnode);
+		    cout << endl;
 
-        //cout << "* Expected output:  8 6 10 5 7 9 11 1 2 3 4 12 15 17 19 *" << endl;
-
-        cout << endl << "Delete BinaryTree...";
-        delete_BTnodes(p_headnode);
-        p_headnode = NULL;
-        cout << "\tDone." << endl;
-    }
+		    cout << endl << "Delete BinaryTree...";
+		    delete_BTnodes(p_headnode);
+		    p_headnode = NULL;
+		    cout << "\tDone." << endl;
+		}
+	}
 
     return 0;
 }
