@@ -15,6 +15,19 @@
 #define EPOLL_MAXEVENTS 64      //epoll_wait的最多返回的events个数
 #define EPOLL_TIMEOUT   5000    //epoll_wait的timeout milliseconds
 
+//get peer port number through socket
+unsigned short int GetPeerPort(int sock) {
+    struct sockaddr_in client_addr;
+    socklen_t client_addr_len;
+
+	if (getpeername(sock, (struct sockaddr *)&client_addr, &client_addr_len) == 0)
+		return client_addr.sin_port;
+	else {
+        perror("getpeername failed");
+        exit(EXIT_FAILURE);
+	}
+}
+
 //set sock in non-blocking mode
 void setSockNonBlock(int sock) {
     int flags;
@@ -154,7 +167,7 @@ int main(int argc, char *argv[]) {
                         perror("inet_ntop failed");
                         exit(EXIT_FAILURE);
                     }
-                    printf("Accepted a client from: %s@%d\n", client_ip_str, client_addr.sin_port);
+                    printf("Accepted an connection request from: %s@%d\n", client_ip_str, client_addr.sin_port);
                     //设置conn_sock为non-blocking
                     setSockNonBlock(conn_sock);
                     //把conn_sock添加到epoll的侦听中
@@ -175,7 +188,7 @@ int main(int argc, char *argv[]) {
                     perror("recv failed");
                     exit(EXIT_FAILURE);
                 }
-                printf("Recved from conn_sock=%d : %s (%d length string)\n", conn_sock, buffer, recv_size);
+                printf("Recved from conn_sock=%d@%d : %s (%d length string)\n", conn_sock, GetPeerPort(conn_sock), buffer, recv_size);
 
 				if (strncmp("EXIT!!!", buffer, 7) != 0 ) {
 		            //立即将收到的内容写回去
