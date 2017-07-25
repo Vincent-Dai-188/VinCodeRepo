@@ -217,7 +217,7 @@ int main(int argc, char *argv[]) {
 
     }
 
-    close(sock);    //关闭server的listening socket
+    close(sock);        //关闭server的listening socket
     close(epoll_fd);    //关闭epoll file descriptor
 
     return 0;
