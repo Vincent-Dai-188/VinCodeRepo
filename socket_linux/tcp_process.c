@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 
 /*客户端的处理过程*/
 void process_conn_client(int s)
@@ -40,7 +41,7 @@ void process_conn_server(int s)
         //write(1, buffer, size);                 /*写到标准输出*/
         write(1, out_buffer, strlen(out_buffer) + 1);          /*写到标准输出*/
 
-        sprintf(buffer, "[From Server]: Received %d bytes.\n", size);
+        sprintf(buffer, "[From Server]: Received %ld bytes.\n", size);
         write(s, buffer, strlen(buffer)+1);       /*发给客户端*/
     }    
 }
