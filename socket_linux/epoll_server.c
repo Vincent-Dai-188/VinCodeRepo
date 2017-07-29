@@ -15,17 +15,24 @@
 #define EPOLL_MAXEVENTS 64      //epoll_wait的最多返回的events个数
 #define EPOLL_TIMEOUT   5000    //epoll_wait的timeout milliseconds
 
-//get peer port number through socket
-unsigned short int GetPeerPort(int sock) {
+//get peer IP & port number through socket
+unsigned short int GetPeerIPPort(int sock, char* client_ip_str) {
     struct sockaddr_in client_addr;
     socklen_t client_addr_len;
 
-	if (getpeername(sock, (struct sockaddr *)&client_addr, &client_addr_len) == 0)
-		return client_addr.sin_port;
-	else {
+    bzero(&client_addr, client_addr_len);           /*清零*/
+    if (getpeername(sock, (struct sockaddr *)&client_addr, &client_addr_len) == 0) {
+        //Convert IPv4 and IPv6 addresses from binary to text form
+        if (!inet_ntop(AF_INET, &(client_addr.sin_addr), client_ip_str, INET_ADDRSTRLEN)) {
+            perror("inet_ntop failed");
+            exit(EXIT_FAILURE);
+        }
+        return ntohs(client_addr.sin_port); 
+    }
+    else {
         perror("getpeername failed");
         exit(EXIT_FAILURE);
-	}
+    }
 }
 
 //set sock in non-blocking mode
@@ -117,7 +124,7 @@ int main(int argc, char *argv[]) {
     int conn_sock;
     struct sockaddr_in client_addr;
     socklen_t client_addr_len;
-    char client_ip_str[INET_ADDRSTRLEN];
+    char client_ip_str[INET6_ADDRSTRLEN];
     int res;
     int i;
     char buffer[BUFF_SIZE];
@@ -162,12 +169,12 @@ int main(int argc, char *argv[]) {
                             exit(EXIT_FAILURE);
                         }
                     }
-					//Convert IPv4 and IPv6 addresses from binary to text form
+                    //Convert IPv4 and IPv6 addresses from binary to text form
                     if (!inet_ntop(AF_INET, &(client_addr.sin_addr), client_ip_str, sizeof(client_ip_str))) {
                         perror("inet_ntop failed");
                         exit(EXIT_FAILURE);
                     }
-                    printf("Accepted an connection request from: %s@%d\n", client_ip_str, client_addr.sin_port);
+                    printf("Accepted an connection request from: %s@%d\n", client_ip_str, ntohs(client_addr.sin_port));
                     //设置conn_sock为non-blocking
                     setSockNonBlock(conn_sock);
                     //把conn_sock添加到epoll的侦听中
@@ -188,30 +195,32 @@ int main(int argc, char *argv[]) {
                     perror("recv failed");
                     exit(EXIT_FAILURE);
                 }
-                printf("Recved from conn_sock=%d@%d : %s (%d length string)\n", conn_sock, GetPeerPort(conn_sock), buffer, recv_size);
+                port = GetPeerIPPort(conn_sock, &client_ip_str[0]);
+                printf("Received from conn_sock=%d(%s@%d) : %s (%d length string)\n", conn_sock, client_ip_str, port, buffer, recv_size);
+                //printf("Received from conn_sock=%d : %s (%d length string)\n", conn_sock, buffer, recv_size);
 
-				if (strncmp("EXIT!!!", buffer, 7) != 0 ) {
-		            //立即将收到的内容写回去
-		            if ( send(conn_sock, buffer, recv_size, 0) == -1 && (errno != EAGAIN) && (errno != EWOULDBLOCK) ) {
-		                //send在non-blocking模式下，返回-1且errno为EAGAIN或EWOULDBLOCK表示当前无可写数据，并不表示错误
-		                perror("send failed");
-		                exit(EXIT_FAILURE);
-		            }
-		            printf("Send to conn_sock=%d done\n", conn_sock);
-				}
-				else {
-		            //将当前socket从epoll的侦听中移除(有文章说：关闭con_sock之后，其会自动从epoll中删除，因此此段代码可以省略)
-		            if ( epoll_ctl(epoll_fd, EPOLL_CTL_DEL, conn_sock, NULL) == -1 ) {
-		                perror("epoll_ctl(EPOLL_CTL_DEL) failed");
-		                exit(EXIT_FAILURE);
-		            }
-		            //关闭连接
-		            if ( close(conn_sock) == -1 ) {
-		                perror("close failed");
-		                exit(EXIT_FAILURE);
-		            }
-		            printf("Close conn_sock=%d done\n", conn_sock);
-				}
+                if (strncmp("", buffer, 1) != 0 ) {
+                    //立即将收到的内容写回去
+                    if ( send(conn_sock, buffer, recv_size, 0) == -1 && (errno != EAGAIN) && (errno != EWOULDBLOCK) ) {
+                        //send在non-blocking模式下，返回-1且errno为EAGAIN或EWOULDBLOCK表示当前无可写数据，并不表示错误
+                        perror("send failed");
+                        exit(EXIT_FAILURE);
+                    }
+                    printf("Send to conn_sock=%d done\n", conn_sock);
+                }
+                else {    /* ^X received, close this connection */
+                    //将当前socket从epoll的侦听中移除(有文章说：关闭con_sock之后，其会自动从epoll中删除，因此此段代码可以省略)
+                    if ( epoll_ctl(epoll_fd, EPOLL_CTL_DEL, conn_sock, NULL) == -1 ) {
+                        perror("epoll_ctl(EPOLL_CTL_DEL) failed");
+                        exit(EXIT_FAILURE);
+                    }
+                    //关闭连接
+                    if ( close(conn_sock) == -1 ) {
+                        perror("close failed");
+                        exit(EXIT_FAILURE);
+                    }
+                    printf("Close conn_sock=%d done\n", conn_sock);
+                }
             }
         }
 
