@@ -5,7 +5,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
-#define PORT 8888       /*侦听端口地址*/
+#define PORT 8899       /*侦听端口地址*/
 #define BACKLOG 2       /*侦听队列长度*/
 
 extern void process_conn_server(int s);
