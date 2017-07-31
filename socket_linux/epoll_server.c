@@ -9,7 +9,7 @@
 #include <sys/epoll.h>
 #include <errno.h>
 
-#define DEFAULT_PORT    8888    //默认端口
+#define DEFAULT_PORT    8899    //默认侦听端口
 #define BUFF_SIZE       1024    //buffer大小
 
 #define EPOLL_MAXEVENTS 64      //epoll_wait的最多返回的events个数
