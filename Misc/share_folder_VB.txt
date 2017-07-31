@@ -1,0 +1,13 @@
+1. Install VirtualBox Extension pack (VBoxGuestAdditions) on the VitualBox VM
+
+2. Set the shared folder (E.g. D:\shareVBU) and make it "Permanent" (Note: Do *not* check the "Auto-mount" option)
+
+3. Launch the VitualBox VM, add the line at the end of /etc/fstab file as root
+# vi /etc/fstab
+......
+......
+shareVBU /mnt/shareVBU vboxsf rw,gid=110,uid=1100,auto 0 0
+
+4. Mount the shared folder
+# mkdir /mnt/shareVBU
+# mount -t vboxsf /mnt/shareVBU

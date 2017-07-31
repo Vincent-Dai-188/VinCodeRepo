@@ -1,0 +1,25 @@
+1. Change position of Unity Launcher
+
+Change position of Unity Launcher - Way 1
+
+Let's start with the simplest way - it just requires you to execute a couple of commands. Following are the commands in question:
+
+	$ gsettings set com.canonical.Unity.Launcher launcher-position Bottom
+	$ gsettings set com.canonical.Unity.Launcher launcher-position Left
+
+The first command mentioned above will move the launcher to bottom, and using the second command you can bring the launcher back to its default (left) position. That's it.
+
+Change position of Unity Launcher - Way 2
+
+The second way is to install the Ubuntu Tweak tool, something which you can do using Ubuntu Software application. Once installed, launch it from Unity Dash. In the Window that appears, click the first icon - dubbed Launcher - in the Unity row.
+
+
+2. Unable to resize launcher icon in ubuntu 16.04 in VirtualBox:
+	
+In VirtualBox 5.1.4 r110228 with the same version of VirtualBox extensions installed in Ubuntu 16.04, enabling 3D Acceleration (Settings... > Display > Screen > Enable 3D Acceleration) fixed the launcher icon resize issue.
+
+Update 1 In addition to enabling 3D Acceleration, install VirtualBox Guest Additions from the Ubuntu repo instead of inserting the VirtualBox CD image:
+
+    apt install virtualbox-guest-dkms virtualbox-guest-utils virtualbox-guest-x11
+
+VirtualBox Guest Additions from the Ubuntu repo fixed rendering issues with Chrome and VS Code.
