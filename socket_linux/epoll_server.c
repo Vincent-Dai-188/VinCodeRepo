@@ -124,7 +124,7 @@ int main(int argc, char *argv[]) {
     int conn_sock;
     struct sockaddr_in client_addr;
     socklen_t client_addr_len;
-    char client_ip_str[INET6_ADDRSTRLEN];
+    char client_ip_str[INET_ADDRSTRLEN];
     int res;
     int i;
     char buffer[BUFF_SIZE];
