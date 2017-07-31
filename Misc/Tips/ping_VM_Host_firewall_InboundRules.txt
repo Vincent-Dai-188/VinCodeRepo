@@ -1,0 +1,16 @@
+VirtualBox, Bridge mode
+
+VM IP: 10.159.11.16
+
+Host IP: 10.159.11.19
+
+Problem：
+VM pings Host doesn't work.
+
+Solution：
+Windows Firewall => Inbound rules => Enable "Virtual Machine Monitoring (Echo Request - ICMPv4-In)" rule.
+
+Virtual Machine Monitoring (Echo Request - ICMPv4-In)
+	Description: Echo Request messages are sent as ping requests to other nodes.
+	Protocol type: ICMPv4
+	Default status: Disabled
