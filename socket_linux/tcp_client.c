@@ -7,15 +7,29 @@
 #include <arpa/inet.h>
 #include <errno.h>
 
-#define PORT 8888                                /*侦听端口地址*/
+#define PORT 8899                                /*SERVER侦听端口*/
 
 extern void process_conn_client(int s);
 
+//get local port number assigned to the specified socket
+unsigned short int GetLocalIPPort(int sock) {
+    struct sockaddr_in client_addr;
+    socklen_t client_addr_len;
+
+    if (getsockname(sock, (struct sockaddr *)&client_addr, &client_addr_len) == 0) {
+        return ntohs(client_addr.sin_port); 
+    }
+    else {
+        perror("getsockname failed");
+        exit(EXIT_FAILURE);
+    }
+}
+		
 int main(int argc, char *argv[])
 {
     int s;                                       /*s为socket描述符*/
     struct sockaddr_in server_addr;              /*服务器地址结构*/
-    char server_ip_str[INET_ADDRSTRLEN];
+	char server_ip_str[INET_ADDRSTRLEN];
     
     s = socket(AF_INET, SOCK_STREAM, 0);         /*建立一个流式套接字 */
     if(s < 0) {                                  /*出错*/
@@ -34,12 +48,14 @@ int main(int argc, char *argv[])
 
     /*连接服务器*/
     connect(s, (struct sockaddr*)&server_addr, sizeof(struct sockaddr));
-    //Convert IPv4 and IPv6 addresses from binary to text form
+	//Convert IPv4 and IPv6 addresses from binary to text form
     if (!inet_ntop(AF_INET, &(server_addr.sin_addr), server_ip_str, sizeof(server_ip_str))) {
         perror("inet_ntop failed");
         exit(EXIT_FAILURE);
     }
-    printf("*** Connected to server '%s:%d' ***\n", server_ip_str, PORT);
+	
+	unsigned short int localPort = GetLocalIPPort(s);
+	printf("*** Connected to server '%s:%d' from local port '%d' ***\n", server_ip_str, PORT, localPort);
     process_conn_client(s);                      /*客户端处理过程*/
     close(s);                                    /*关闭连接*/
     return 0;
