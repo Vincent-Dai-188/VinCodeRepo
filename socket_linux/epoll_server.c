@@ -20,7 +20,7 @@ unsigned short int GetPeerIPPort(int sock, char* client_ip_str, socklen_t str_le
     struct sockaddr_in client_addr;
     socklen_t client_addr_len;
 
-    bzero(&client_addr, client_addr_len);           /*清零*/
+    client_addr_len = sizeof(client_addr);
     if (getpeername(sock, (struct sockaddr *)&client_addr, &client_addr_len) == 0) {
         //Convert IPv4 and IPv6 addresses from binary to text form
         if (!inet_ntop(AF_INET, &(client_addr.sin_addr), client_ip_str, str_len)) {
