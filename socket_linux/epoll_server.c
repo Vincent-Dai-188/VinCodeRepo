@@ -16,14 +16,14 @@
 #define EPOLL_TIMEOUT   5000    //epoll_wait的timeout milliseconds
 
 //get peer IP & port number through socket
-unsigned short int GetPeerIPPort(int sock, char* client_ip_str) {
+unsigned short int GetPeerIPPort(int sock, char* client_ip_str, socklen_t str_len) {
     struct sockaddr_in client_addr;
     socklen_t client_addr_len;
 
     bzero(&client_addr, client_addr_len);           /*清零*/
     if (getpeername(sock, (struct sockaddr *)&client_addr, &client_addr_len) == 0) {
         //Convert IPv4 and IPv6 addresses from binary to text form
-        if (!inet_ntop(AF_INET, &(client_addr.sin_addr), client_ip_str, INET_ADDRSTRLEN)) {
+        if (!inet_ntop(AF_INET, &(client_addr.sin_addr), client_ip_str, str_len)) {
             perror("inet_ntop failed");
             exit(EXIT_FAILURE);
         }
@@ -195,9 +195,9 @@ int main(int argc, char *argv[]) {
                     perror("recv failed");
                     exit(EXIT_FAILURE);
                 }
-                port = GetPeerIPPort(conn_sock, &client_ip_str[0]);
+
+                port = GetPeerIPPort(conn_sock, client_ip_str, sizeof(client_ip_str));
                 printf("Received from conn_sock=%d(%s@%d) : %s (%d length string)\n", conn_sock, client_ip_str, port, buffer, recv_size);
-                //printf("Received from conn_sock=%d : %s (%d length string)\n", conn_sock, buffer, recv_size);
 
                 if (strncmp("", buffer, 1) != 0 ) {
                     //立即将收到的内容写回去
