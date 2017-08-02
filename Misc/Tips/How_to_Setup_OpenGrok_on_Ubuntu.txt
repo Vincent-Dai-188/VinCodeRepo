@@ -1,0 +1,56 @@
+Howto Setup OpenGrok on Ubuntu 14.04LTS
+======================================
+By Vector Li <idorax@126.com>
+On 06/21/2017
+
+1. Install web server 'tomcat7'
+
+   veli@idorax:/tmp$ sudo apt-get install tomcat7
+
+2. Install ctags
+
+   veli@idorax:/tmp$ sudo apt-get install exuberant-ctags
+
+3. Download and Install OpenGrok (0.12.1.5)
+   o  http://opengrok.github.io/OpenGrok/
+   +1 https://github.com/OpenGrok/OpenGrok
+
+   veli@idorax:/tmp$ wget https://github.com/OpenGrok/OpenGrok/files/213268/opengrok-0.12.1.5.tar.gz
+   veli@idorax:/tmp$ tar zxf opengrok-0.12.1.5.tar.gz
+   veli@idorax:/tmp$ sudo mv opengrok-0.12.1.5 /opt
+   veli@idorax:/tmp$ sudo -i
+   root@idorax:~# cd /opt
+   root@idorax:/opt# ln -s opengrok-0.12.1.5 opengrok
+
+4. Do the setup
+   4.1 Copy opengrok/lib/source.war to /var/lib/tomcat7/webapps/
+
+   root@idorax:/opt# cp /opt/opengrok/lib/source.war /var/lib/tomcat7/webapps/
+
+   4.2 Update web.xml
+   
+   root@idorax:/opt# cp /var/lib/tomcat7/webapps/source/WEB-INF/web.xml /tmp/web.xml
+   root@idorax:/opt# vi /var/lib/tomcat7/webapps/source/WEB-INF/web.xml
+   // ...Edit L8...
+   // 8     <param-value>/var/opengrok/etc/configuration.xml</param-value>
+   // ...Replace /var with /opt
+   root@idorax:/opt# diff /var/lib/tomcat7/webapps/source/WEB-INF/web.xml /tmp/web.xml
+   8c8
+   <     <param-value>/opt/opengrok/etc/configuration.xml</param-value>
+   ---
+   >     <param-value>/var/opengrok/etc/configuration.xml</param-value>
+
+5. Create a sample project
+   veli@idorax:/var/tmp/veli$ git clone https://github.com/idorax/vCodeHub.git
+   The program 'git' is currently not installed. You can install it by typing:
+   sudo apt install git
+   veli@idorax:/var/tmp/veli$ sudo apt install git
+   veli@idorax:/var/tmp/veli$ git clone https://github.com/idorax/vCodeHub.git
+   veli@idorax:/tmp$ sudo -i
+   root@idorax:~# cd /opt
+   root@idorax:/opt# /opt/opengrok/bin/OpenGrok index /var/tmp/veli/vCodeHub
+
+Congratulations, all is done! Please go to
+    localhost:8080/source
+
+Have fun!

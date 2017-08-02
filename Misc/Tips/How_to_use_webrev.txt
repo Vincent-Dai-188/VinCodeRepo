@@ -1,0 +1,6 @@
+1. $ cd /var/tmp
+2. $ git clone https://github.com/joyent/webrev.git
+3. # export PATH=/var/tmp/webrev/bin:$PATH
+4. use svn/git to manage your code
+   - if git, must do 'git commit' before issue 'webrev'
+   - if svn, issue 'webrev' directly
