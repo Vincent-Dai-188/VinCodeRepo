@@ -1,0 +1,32 @@
+	
+Hibernation was disabled on 12.04 for machines that are not certified with Ubuntu.
+
+First you need to test your machine supports hibernation. Test it with the command:
+
+ sudo pm-hibernate
+ # or for newer Ubuntus like 17.04
+ sudo systemctl hibernate
+
+The system will try to hibernate. If you are able to start the system again then you are more or less safe to add an override.
+
+
+Ubuntu 16.04 and above
+----------------------
+
+For enabling in the interface you'll need to run sudo nano /etc/polkit-1/localauthority/50-local.d/com.ubuntu.enable-hibernate.pkla and fill with:
+
+[Re-enable hibernate by default in upower]
+Identity=unix-user:*
+Action=org.freedesktop.upower.hibernate
+ResultActive=yes
+
+[Re-enable hibernate by default in logind]
+Identity=unix-user:*
+Action=org.freedesktop.login1.hibernate;org.freedesktop.login1.hibernate-multiple-sessions
+ResultActive=yes
+
+Save by pressing 'Ctrl-O' then 'Enter' and then exit nano by pressing 'Ctrl-X'.
+
+Restart and hibernation is back!
+
+Or run "killall unity-panel-service" to just reset the (upper right) power menu.
