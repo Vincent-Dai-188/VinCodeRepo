@@ -27,21 +27,14 @@ else:
     str_nospace = re.sub(r'\s', r'', str_names)
 
     """ Convert the string into list """
-    ''' Replace all the numbers (except the first one) in the string with '\n' '''
-    ''' If we use this 's/(^|\D)\d+(\D)/\1\n\2' regex below, there will be a '\n'
-        left at the start of the multi-line string, then when we exec splitlines(),
-        there will be an empty item ('') in the result list at the first pos '''
-        #str_multilines = re.sub(r'(^|\D)\d+(\D)', r'\1\n\2', str_nospace)
-    str_multilines = re.sub(r'(\D)\d+(\D)', r'\1\n\2', str_nospace)
-    if str_multilines:
-        ''' Drop the first number at the start of the multi-line string '''
-        str_multilines = re.sub(r'^\d+(\D)', r'\1', str_multilines)
-        ''' Split the multi-line string into a list of strings '''
-        #namestr_list = str_multilines.split('\n')
-        namestr_list = str_multilines.splitlines()
-        #print(namestr_list)
-    else:
-        print("\tFailed to substitute!\n")
+    ''' Replace all the numbers in the string with '\n' '''
+    str_multilines = re.sub(r'(^|\D)\d+(\D)', r'\1\n\2', str_nospace)
+    ''' Drop the first '\n' at the start of the multi-line string '''
+    str_multilines = re.sub(r'^\n', r'', str_multilines)
+    ''' Split the multi-line string into a list of strings '''
+    #namestr_list = str_multilines.split('\n')
+    namestr_list = str_multilines.splitlines()
+    #print(namestr_list)
 
     print("\n[CHK-1] Check for typos:")
     for name_item in namestr_list:
