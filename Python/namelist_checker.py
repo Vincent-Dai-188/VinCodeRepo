@@ -3,6 +3,7 @@
  
 import re
 
+targetFile = "ans_namelist.txt"
 tuple_names = ('戴骏翔', '张浩然', '高心咏', '杨可逸', '管丹辰', '王轶天',    \
         '奚著铭', '宣典村', '王志浩', '曲嘉骏', '赵禹芃', '田丞凯', '杜卓伦', \
         '温瑞程', '靳松朴', '索春祥', '韩雨萌', '李林珊', '黄心鹏', '安启迪', \
@@ -10,46 +11,51 @@ tuple_names = ('戴骏翔', '张浩然', '高心咏', '杨可逸', '管丹辰', 
         '刘艺萱', '田沐秋', '智清盈', '周禹涵', '忻雨绮', '付兴', '马睿欣',   \
         '刘园青', '姚颖函', '张芷菁')
 
-f_full = open('./ans_namelist.txt', encoding='utf-8')
-str_names = f_full.read()
-f_full.close()
+try:
+    f_full = open('./'+targetFile, encoding='utf-8')
 
-print("All the names:", str_names)
+except FileNotFoundError:
+    print("\tFile '" + targetFile + "' doesn't exist!")
 
-
-
-''' Remove all whitespaces from the string '''
-ret_nospace = re.sub(r'\s', r'', str_names)
-if ret_nospace:
-    #print(ret_nospace)
-    pass
 else:
-    print("\tNot found any whitespace!\n")
-    ret_nospace = str_names
+    str_names = f_full.read()
+    f_full.close()
 
-"""
-''' Insert '\n' at the end of each name in the string '''
-ret = re.sub(r'(\D)(?=\d)', r'\1\n', ret_nospace)
-if ret:
-    ''' Convert the result string into list '''
-    ans_list = ret.split('\n')
-    print(ans_list)
-else:
-    print("\tFailed to substitude!\n")
-"""
+    print("The target name list:\n" + str_names)
 
-print("\nMatching the offical name list for absence/redundance:")
-#namePattern = re.compile(r'\D(\d+)\D', re.IGNORECASE);
-sn = 0
-for name_item in tuple_names:
-    sn += 1
-    n = ret_nospace.count(name_item)
-    if n != 1:
-        print("  -", 20151400 + sn, name_item, ": [", n, "]")
-        ''' List out all the corresponding redundant items '''
-        if n > 1:
-            ret = re.findall('\D(\d+' + name_item + ')', ret_nospace)
-            if ret:
-                print("\t -", ret)
-            else:
-                print("\tFailed to findall!\n")
+    ''' Remove all the whitespaces from the string '''
+    str_nospace = re.sub(r'\s', r'', str_names)
+
+    """ Convert the string into list """
+    ''' Replace all the numbers in the string with '\n' '''
+    str_multilines = re.sub(r'(^|\D)\d+(\D)', r'\1\n\2', str_nospace)
+    if str_multilines:
+        ''' Split the modified multilines string into a list of strings '''
+        #namestr_list = str_multilines.split('\n')
+        namestr_list = str_multilines.splitlines()
+        #print(namestr_list)
+    else:
+        print("\tFailed to substitute!\n")
+
+    print("\n[CHK-1] Check for typos:")
+    for name_item in namestr_list:
+        if name_item:
+            n = tuple_names.count(name_item)
+            if n == 0:
+                print("  -", name_item)
+
+    print("\n[CHK-2] Check for absence/redundance:")
+    #namePattern = re.compile(r'\D(\d+)\D', re.IGNORECASE);
+    sn = 0
+    for name_item in tuple_names:
+        sn += 1
+        n = str_nospace.count(name_item)
+        if n != 1:
+            print("  -", 20151400 + sn, name_item, ": [", n, "]")
+            ''' List out all the corresponding redundant items '''
+            if n > 1:
+                ret = re.findall('\D(\d+' + name_item + ')', str_nospace)
+                if ret:
+                    print("\t -", ret)
+                else:
+                    print("\tFailed to findall!\n")
