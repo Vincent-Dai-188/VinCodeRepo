@@ -21,20 +21,29 @@ else:
     str_names = f_full.read()
     f_full.close()
 
-    print("The target name list:\n" + str_names)
+    print("Target name string:\n" + str_names)
 
     ''' Remove all the whitespaces from the string '''
     str_nospace = re.sub(r'\s', r'', str_names)
 
     """ Convert the string into list """
-    ''' Replace all the numbers in the string with '\n' '''
-    str_multilines = re.sub(r'(^|\D)\d+(\D)', r'\1\n\2', str_nospace)
-    ''' Drop the first '\n' at the start of the multi-line string '''
-    str_multilines = re.sub(r'^\n', r'', str_multilines)
+    ''' METHOD-1 '''
+    ''' 1.1 Replace all the numbers (except the first one) with '\n' '''
+    #str_multilines = re.sub(r'(\D)\d+(\D)', r'\1\n\2', str_nospace)
+    ''' 1.2 Drop the first '\n' at the start of the multi-line string '''
+    #str_multilines = re.sub(r'^\d+', r'', str_multilines)
+    
+    ''' METHOD-2 '''
+    ''' 2.1 Insert '\n' at the end of each name (except the last one) '''
+    str_multilines = re.sub(r'(?<=\D)(\d)', r'\n\1', str_nospace)
+    ''' 2.2 Drop all the numbers in the multi-line string '''
+    str_multilines = re.sub(r'\d+', r'', str_multilines)
+    
     ''' Split the multi-line string into a list of strings '''
     #namestr_list = str_multilines.split('\n')
     namestr_list = str_multilines.splitlines()
-    #print(namestr_list)
+    print("\nParsed name list:")
+    print(namestr_list)
 
     print("\n[CHK-1] Check for typos:")
     for name_item in namestr_list:
