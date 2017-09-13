@@ -21,7 +21,8 @@ else:
     str_names = f_full.read()
     f_full.close()
 
-    print("Official name list (", len(tuple_names), "persons ):")
+    #print("Official name list (", len(tuple_names), "persons ):")
+    print("Official name list (" + str(len(tuple_names)) + "):")
     print(tuple_names)
 
     print("\nTarget name string:\n" + str_names)
