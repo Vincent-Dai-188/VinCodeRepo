@@ -32,7 +32,7 @@ def gen_namelist():
         #print(namestr_list)
         
         tuple_ret = tuple(namestr_list)
-        print("\nTuple_namelist (len =", len(tuple_ret), "):")
+        print("\nTuple_namelist (len = " + str(len(tuple_ret)) + "):")
         print(tuple_ret)
         return tuple_ret
             
