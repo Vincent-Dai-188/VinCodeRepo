@@ -9,8 +9,8 @@ tuple_names = ('戴骏翔', '张浩然', '高心咏', '杨可逸', '管丹辰', 
         '温瑞程', '靳松朴', '索春祥', '韩雨萌', '李林珊', '黄心鹏', '安启迪', \
         '曹艺涵', '杜泽惠', '邓北', '刘芊寻', '王一宁', '张璋', '刘添添',     \
         '刘艺萱', '田沐秋', '智清盈', '周禹涵', '忻雨绮', '付兴', '马睿欣',   \
-        '刘园青', '姚颖函', '张芷菁')
-
+        '刘园青', '姚颖函', '张芷菁', '龚轩', '刘逸卿', '张天佑', '聂易辰',   \
+        '王子腾')
 try:
     f_full = open('./'+targetFile, encoding='utf-8')
 
@@ -21,7 +21,10 @@ else:
     str_names = f_full.read()
     f_full.close()
 
-    print("Target name string:\n" + str_names)
+    print("Official name list (", len(tuple_names), "persons ):")
+    print(tuple_names)
+
+    print("\nTarget name string:\n" + str_names)
 
     ''' Remove all the whitespaces from the string '''
     str_nospace = re.sub(r'\s', r'', str_names)
@@ -58,7 +61,7 @@ else:
         sn += 1
         n = str_nospace.count(name_item)
         if n != 1:
-            print("  -", 20151400 + sn, name_item, ": [", n, "]")
+            print("  -", 20151400 + sn, name_item, "\t[", n, "]")
             ''' List out all the corresponding redundant items '''
             if n > 1:
                 ret = re.findall('\D(\d+' + name_item + ')', str_nospace)
