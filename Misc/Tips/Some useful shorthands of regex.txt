@@ -1,0 +1,115 @@
+Summary of Common Metacharacters:
+Metacharacter       Name                        Matches
+-------------------------------------------------------------------------------------------------
+.                   dot                         any one character
+[。。。]            character class             any character listed
+[^。。。]           negated character class     any character not listed
+-------------------------------------------------------------------------------------------------
+^                   caret                       the position at the start of the line
+$                   dollar                      the position at the end of the line
+\<                  backslash less-than         the position at the start of a word
+\>                  backslash greater-than      the position at the end of a word
+-------------------------------------------------------------------------------------------------
+｜                  or; bar                     matches either expression it separates
+(。。。)            parentheses                 used to limit scope of ‘｜’, grouping(capturing)
+-------------------------------------------------------------------------------------------------
+
+Mastering Regular Expressions, 3rd Edition, P49:
+
+Among the more useful shorthands that Perl and many other flavors of regex
+pr ovide (some of which we haven't seen yet) are:
+\t a tab character
+\n a newline character
+\r a carriage-r eturn character
+\s matches any whitespace character (space, tab, newline, formfeed, and such)
+\S anything not \s
+\w [a-zA-Z0-9_] (useful as in \w+, ostensibly to match a word)
+\W anything not \w, i.e., [^a-zA-Z0-9_]
+\d [0-9], i.e., a digit
+\D anything not \d, i.e., [^0-9]
+
+...... '\A' and '\Z', which normally behave the
+same as '^' and '$' except they are not modified by this mode. This means that '\A'
+and '\Z' never match at embedded newlines. Some implementations also allow '$'
+and '\Z' to match before a string-ending newline. Such implementations often offer
+'\Z', which disregards all newlines and matches only at the very end of the string.
+
+Lookahead:   (?=。。。), 	(?!。。。)	/* negative */
+Lookbehind:  (?<=。。。), 	(?<!。。。)	/* negative */
+	One important issue not discussed there relates to what kind of expression can
+	appear within either of the lookbehind constructs. Most implementations have 
+	restrictions about the length of text matchable within lookbehind (but not within
+	lookahead, which is unrestricted). The most restrictive rule exists in Perl and
+	Python, where the lookbehind can match only fxed-length strings. For example, 
+	(?<!\w) and (?<!this|that) are allowed, but (?<!books?) and (?<!^\w+:) are not,
+	as they can match a variable amount of text. In some cases, such as with
+	(?<!books?), you can accomplish the same thing by rewriting the expression, as 
+	with (?<!book)(?<!books), although that's certainly not easy to read at first glance.
+
+(?i)
+If supported, the partial application of a mode is achieved with a regex construct that
+looks like "(?i)" to turn on case-insensitive matching, or "(?-i)" to turn it off. Some
+flavors also support "(?i:。。。)" and "(?-i:。。。)", which turn on and off case-insensitive
+matching for the subexpression enclosed.
+
+Grouping-only parentheses (i.e., Non-Capturing Parentheses): (?:。。。)
+
+Atomic grouping: (?>。。。)		/* note: Atomic grouping itself will *not* be backreferenced, endless it is be parenthesized, i.e., ((?>。。。)). */
+Possessive quantifers:  (。。。)*+
+For example:
+	- atomic grouping: (?>(\\.|[^"])*)
+	- possessive quantifers:  (\\.|[^"])*+
+
+
+Conditional: (? if then| else)
+Example-1:
+    (?(?<=NUM:)\d+|\w+)
+Example-2:
+    Retrieve all the five-digit US postal codes (ZIP codes) that begin with 44 from the data below:
+    03824531449411615213441829503544272752010217443235
+    (?(?=44)(\d{5})|(?:\d{5}))	/* the matched ZIP codes (44182, 44272) are stored in $1 */
+
+
+Greedy quantifiers: *, +, ?, {mix,max}
+note: \d\d\d\d\d == \d{5}
+
+
+Lazy quantifiers: *?, +?, ??, {min,max}?
+Some tools offer the rather ungainly looking *?, +?, ??, and {min,max}?. These are
+the lazy versions of the quantifers. (They are also called minimal matching, nongr
+eedy, and ungr eedy.) Quantifers are normally "greedy" and try to match as
+much as possible. Conversely, these non-greedy versions match as little as possible,
+just the bare minimum needed to satisfy the match. 
+
+
+***
+A character class (e.g. [uvwxyz]) is always faster than the equivalent 
+alternation (e.g. u|v|w|x|y|z).
+***
+
+
+Actually, in times past, I would use \b\B to force one part of a larger expression
+to fail, during testing. For example, I might insert it at (this\b\B|this other) to
+guaranteed failure of the first alternative. These days, when I need a must fail 
+component, I use (?!). 
+
+
+the regex (.+)X\1 finds locations where a string is repeated on either side of `X'.
+E.g. "AA234X234BBB" or "1234X2345".
+
+==============================================
+RE practical sample in Python:
+
+    import re
+    ''' RE search somthings like "[66影视www.66ys.tv]" or "[www.66haoys.tv]" '''
+    namePattern = re.compile(r'\[[^\]]+\.(tv\)]', re.IGNORECASE);
+
+    ret = namePattern.search(fname)
+    if ret:
+        print('-', fname)
+
+        ''' Substitute, for example "[www.66haoys.tv]" to "[66tv]" '''
+        nfname = namePattern.sub(r'[66\g<1>]', fname)
+
+        print('  >>', nfname)
+        os.rename(fname, nfname)
