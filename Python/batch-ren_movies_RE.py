@@ -1,5 +1,6 @@
 # coding=utf-8
 import os
+import sys
 
 def get_args():
     """
@@ -10,8 +11,7 @@ def get_args():
         print('Usage: batch-ren_movies_RE.py TARGET-DIR')
         sys.exit(2)
     """
-    #targetdir = "d:/temp/rename_t"
-    targetdir = "D:/TDDOWNLOAD/风筝"
+    targetdir = "D:\TDDOWNLOAD\越狱.Prison.Break.S02"
     return targetdir
 
 if __name__ == "__main__":
