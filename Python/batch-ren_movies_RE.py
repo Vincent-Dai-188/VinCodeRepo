@@ -1,3 +1,4 @@
+# coding=utf-8
 import os
 
 def get_args():
@@ -16,14 +17,14 @@ def get_args():
 if __name__ == "__main__":
     targetdir = get_args()
     print("  - Target dir:", targetdir)
-
     if os.path.exists(targetdir):
         os.chdir(targetdir)
         print()
         
         import re
         ''' RE search somthings like "[66影视www.66ys.tv]" or "[www.66haoys.tv]" '''
-        namePattern = re.compile(r'^fz(.*)\[[^\]]+\.(tv)\]', re.IGNORECASE);
+        #namePattern = re.compile(r'\[[^\]]+\.(tv)\]', re.IGNORECASE);
+        namePattern = re.compile(r'\[66影视www.66ys.cn\]', re.IGNORECASE);
         for fname in os.listdir():
             ret = namePattern.search(fname)
             if ret:
@@ -32,11 +33,17 @@ if __name__ == "__main__":
                 For example: replace "[www.66haoys.tv]" with "[66tv]" (\g<1> = 'tv')
                 #nfname = namePattern.sub(r'[66\g<1>]', fname)
                 '''                
-                nfname = namePattern.sub(r'风筝\g<1>', fname)
+                nfname = namePattern.sub('', fname)
                 print('  >>', nfname)
-                os.rename(fname, nfname)
+                #os.rename(fname, nfname)
+
+        sel = input("Please intput your choice: ")
+        if sel != 'Y':
+            print("Abort!")
+            sys.exit(2)
+
         print()
-        for fname in os.listdir():
-            print('+', fname)
+        #for fname in os.listdir():
+        #    print('+', fname)
     else:
         print("Specified path '%s' does not exist!" % targetdir)
