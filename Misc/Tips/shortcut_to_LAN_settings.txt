@@ -1,2 +1,0 @@
-Shortcut to IE "LAN Settings": 
-	C:\Windows\System32\control.exe inetcpl.cpl,,4
