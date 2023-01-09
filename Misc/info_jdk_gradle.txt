@@ -1,0 +1,3 @@
+JDK 15.0.1 isn't compatible with Gradle 5.6.2, Please fix JAVA_HOME environment variable.
+
+Failed to download Amazon Corretto 11.0.17. Failed to download and configure JDK for [corretto-11: java version "11.0.17" (C:/Users/U6067763/.jdks/corretto-11.0.17)]. Failed to download Amazon Corretto 11.0.17 from https://corretto.aws/downloads/resources/11.0.17.8.1/amazon-corretto-11.0.17.8.1-windows-x64-jdk.zip. Cannot download 'https://corretto.aws/downloads/resources/11.0.17.8.1/amazon-corretto-11.0.17.8.1-windows-x64-jdk.zip': Connection closed at byte 7811388. Expected 187316832 bytes. , response: 200 OK
