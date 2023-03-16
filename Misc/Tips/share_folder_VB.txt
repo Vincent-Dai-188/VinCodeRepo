@@ -11,5 +11,3 @@ shareVBU /mnt/shareVBU vboxsf rw,gid=110,uid=1100,auto 0 0
 4. Mount the shared folder
 # mkdir /mnt/shareVBU
 # mount -t vboxsf /mnt/shareVBU
-
-/* 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 */
