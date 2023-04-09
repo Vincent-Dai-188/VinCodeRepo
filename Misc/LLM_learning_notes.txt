@@ -1,0 +1,69 @@
+https://levelup.gitconnected.com/why-is-chatgpt-so-awesome-new-capabilities-emerge-when-the-language-model-is-large-enough-f25b3ab33439
+why-is-chatgpt-so-awesome-new-capabilities-emerge-when-the-language-model-is-large-enoug
+
+
+Wolfram|Alpha as the Way to Bring Computational Knowledge Superpowers to ChatGPT
+https://writings.stephenwolfram.com/2023/01/wolframalpha-as-the-way-to-bring-computational-knowledge-superpowers-to-chatgpt/
+
+
+https://ai.googleblog.com/2022/04/pathways-language-model-palm-scaling-to.html
+As the scale of the model increases, the performance improves across tasks while also unlocking new capabilities.
+
+Emergent Abilities Definition: An ability is emergent if it is not present in smaller models but is present in larger models.
+
+
+https://towardsdatascience.com/self-supervised-transformer-models-bert-gpt3-mum-and-paml-2b5e29ea0c26
+Evolution of Large Language Models — BERT, GPT3, MUM and PaML
+Algorithms behind ChatGPT and Google Bard
+2022/07 (Google)
+
+>> In this article we will present an overview of Transformer-based self-supervised language models and explain core concepts including pretraining and downstream adaptation. We will also compare several popular self-supervised models including GPT3 and BERT — the pioneers in transformer-based self-supervised language models, MUM — the very model that powers many Google features in the recent years, and PaML — the most recent breakthrough in the domain.
+
+
+Transformers have several different architectures:
+
+Encoder-decoder
+
+This is used in the original Transformer model. The encoding layers generate encodings of the inputs while the decoding layers process the encodings to generate an output sequence. Both the encoder and decoder layers have a feed-forward neural network and make use of the attention mechanism.
+
+2. Encoder-only
+
+Encoder-only models are designed to produce a single prediction per input token or sequence, which means they are applicable for classification tasks but not for generative tasks like machine translation or text summarization. The encoder is bidirectional and consists of two major components: a self-attention mechanism and a feed-forward neural network.
+
+3. Decoder-only
+
+Decoder models are autoregressive, meaning each step’s output is fed into the next step(s) as the input. This also means decoders are unidirectional. Without the encoder to encode the input sentence, the decoder itself learns how to pay attention based on the input sentence and what it has output so far.
+
+
+
+BERT
+
+Bidirectional Encoder Representations from Transformers(BERT) is one of the first developed Transformer-based self-supervised language models. BERT has 340M parameters and is an encoder-only bidirectional Transformer.
+
+BERT is pre-trained with unlabeled language sequences from the BooksCorpus (800M words) and English Wikipedia (2,500M words). Recall that pre-training is unsupervised. To construct pre-training objectives, 15% of all tokens in each sequence are masked at random and the model is trained to predict the masked words rather than reconstructing the entire input. This is called ‘masked language model’(MLM). In addition to MLM, BERT also uses a ‘next sentence prediction’ task to jointly pre-train the model.
+
+Fine-tuning is applied in the downstream adaption where task-specific inputs and outputs are plugged into BERT and all the parameters are fine-tuned end-to-end.
+GPT3
+
+GPT3 is part of Open AI’s GPT model family. This is the very model that’s powering the famous ChatGPT. It’s a decoder only unidirectional autoregressive model with 175B parameters(much bigger than BERT).
+
+Different from BERT, GPT3 attempts to replace the downstream fine-tuning with few-shot learning. The model is given a small amount of data demonstration of the task at the inference time as conditioning but unlike the fine-tuning approach, there is no weight update. This is inspired by the fact that once humans have a general language understanding we don’t necessarily need large supervised datasets to learn most language tasks. Even though fine-tuning still outperforms few-shot learning in most cases, GPT3 shows that in some tasks the zero-shot, one-shot, and few-shot settings nearly match the performance of state-of-the-art fine-tuned systems.
+
+Open AI has planned to release GPT4 soon which will likely be another top performer. I will write dedicated article about it once it comes out. Stay tuned!
+
+MUM (T5)
+
+Multitask Unified Model(MUM) is the technology that powers the sophisticated Google Search today.
+
+MUM uses Text-To-Text Transfer Transformer(T5), an encoder-decoder, multi-task learning model that combines the initial unsupervised pre-training (as a task) and fine-tuning for specific tasks(each as a task). It pre-trains on a multi-task mixture of unsupervised and supervised tasks before fine-tuning so we can use the same model, loss function, and hyperparameters on any NLP tasks.
+
+MUM is multimodal, so it understands information across text and images. It has 11B parameters and is also trained across 75 different languages and many different tasks at once, allowing it to develop a more comprehensive understanding of information and world knowledge than previous models. In fact, it’s 1000 times more powerful than BERT.
+
+
+PaML
+
+Pathways Language Model (PaML) is the most recent breakthrough from Google. It has scaled to 540B parameters but is efficiently trained with the Pathways system, a new ML system which enables highly efficient training of very large neural networks across thousands of accelerator chips.
+
+PaML has a standard encoder-decoder Transformer model architecture in a decoder-only setup (i.e., each timestep can only attend to itself and past timesteps), with a few modifications. With the large scale of parameters, it demonstrates outstanding few-shot performance, achieving state-of-the-art results on 28 out of the 29 most widely evaluated English NLP tasks including code generation, question answering, multilingual language generation, NMT, reasoning etc.
+
+What’s worth mentioning is that PaML has breakthrough performance on arithmetic and commonsense reasoning tasks. This achieved by a combination of scale and chain-of-thought prompting where the model is explicitly prompted to generate a natural language logical inference chain before making its prediction. Wait, isn’t this what we humans naturally do?
