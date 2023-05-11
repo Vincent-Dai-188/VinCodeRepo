@@ -1,0 +1,10 @@
+
+https://github.com/LearningOS
+
+https://github.com/LearningOS/rust-based-os-comp2023/blob/main/relatedinfo.md
+
+https://github.com/rcore-os
+
+https://github.com/oscomp
+
+os.educg.net
