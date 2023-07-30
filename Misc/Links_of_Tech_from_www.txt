@@ -1,0 +1,9 @@
+[ACTION REQUIRED] - Update your TLS connections to 1.2 to maintain AWS endpoint connectivity
+https://repost.aws/questions/QUlH6W6T4BQjS1X1QSqwA5Tw/action-required-update-your-tls-connections-to-1-2-to-maintain-aws-endpoint-connectivity-aws-account-926257648248
+
+
+OpenAI Chat Bot for MS Teams:
+https://www.youtube.com/watch?v=nLG0AJF0wSw
+
+Connect MS Teams with GPT3 ( ChatGPT ) using Power Automate:
+https://www.youtube.com/watch?v=MbxwX4nXEfg
